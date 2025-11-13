@@ -24,11 +24,11 @@ const scenes: Record<string, Scene> = {
     id: 'start',
     background: 'bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900',
     character: 'Аффогато',
-    text: 'Тронный зал погружён в полумрак. Дарк Какао сидит на троне, его взгляд прикован к тебе. Вчера он снова сорвался на придворных... но с тобой он всегда спокоен. Слишком спокоен.',
+    text: 'Тронный зал погружён в полумрак. За высокими окнами бушует метель — в горах королевства вечная зима. Дарк Какао сидит на троне, его взгляд прикован к тебе. Вчера он снова сорвался на придворных... но с тобой он всегда спокоен. Слишком спокоен.',
     choices: [
       { text: 'Подойти ближе к трону', next: 'approach', affection: 2 },
       { text: 'Остаться на расстоянии, доложить о делах', next: 'distance', affection: -1 },
-      { text: 'Предложить прогуляться по замку', next: 'walk', affection: 1 }
+      { text: 'Предложить прогуляться в зимнем саду', next: 'garden_walk', affection: 1 }
     ]
   },
   approach: {
@@ -38,7 +38,8 @@ const scenes: Record<string, Scene> = {
     text: '«Аффогато...» — его голос звучит мягко, почти нежно. Он протягивает руку, и ты видишь, как его пальцы слегка дрожат. «Ты единственный, кто понимает меня. Единственный, кто не боится.» Его глаза горят странным огнём.',
     choices: [
       { text: 'Взять его руку', next: 'take_hand', affection: 3 },
-      { text: 'Отступить, сохраняя дистанцию', next: 'retreat', affection: -2 }
+      { text: 'Отступить, сохраняя дистанцию', next: 'retreat', affection: -2 },
+      { text: 'Предложить устроить ужин вдвоём', next: 'dinner_offer', affection: 2 }
     ]
   },
   distance: {
@@ -51,14 +52,15 @@ const scenes: Record<string, Scene> = {
       { text: 'Настоять на важности государственных дел', next: 'insist', affection: -3 }
     ]
   },
-  walk: {
-    id: 'walk',
-    background: 'bg-gradient-to-b from-indigo-950 via-purple-900 to-slate-900',
+  garden_walk: {
+    id: 'garden_walk',
+    background: 'bg-gradient-to-b from-slate-800 via-blue-950 to-purple-950',
     character: 'Дарк Какао',
-    text: '«Прогулка?» — король медленно встаёт. «Отличная идея. Только мы вдвоём.» Он делает знак стражникам покинуть зал. Ты остаёшься наедине с ним в пустом коридоре. «Знаешь, я бы сжёг это королевство дотла, если бы ты попросил.»',
+    text: 'Зимний сад укрыт снегом. Ледяные скульптуры сверкают в лунном свете, замёрзшие фонтаны застыли как памятники. «Красиво, не правда ли?» — король берёт тебя за руку. Его прикосновение холодное. «Как и ты. Холодный, безупречный... мой.» За деревьями мелькает тень — кто-то из слуг.',
     choices: [
-      { text: 'Улыбнуться: «Я знаю»', next: 'smile', affection: 2 },
-      { text: 'Попытаться сменить тему', next: 'change_topic', affection: -1 }
+      { text: 'Окликнуть слугу для вопроса', next: 'call_servant', affection: -4 },
+      { text: 'Игнорировать слугу, сосредоточиться на короле', next: 'focus_king', affection: 3 },
+      { text: 'Предложить вернуться в тепло замка', next: 'return_castle', affection: 1 }
     ]
   },
   take_hand: {
@@ -135,6 +137,247 @@ const scenes: Record<string, Scene> = {
     choices: [
       { text: 'Перестать сопротивляться', next: 'ending_captivity', affection: -3 }
     ]
+  },
+  call_servant: {
+    id: 'call_servant',
+    background: 'bg-gradient-to-b from-red-950 via-black to-red-950',
+    character: 'Дарк Какао',
+    text: '«Стой!» — кричишь ты слуге. Рука короля сжимается на твоём запястье. Температура падает на десятки градусов. «Ты... окликаешь других? Когда я рядом с тобой?» Его голос ледяной. Слуга в ужасе убегает. «Похоже, ты забыл, кому принадлежишь.»',
+    choices: [
+      { text: 'Попытаться объяснить', next: 'explain_servant', affection: -2 },
+      { text: 'Извиниться', next: 'apologize_jealousy', affection: 0 }
+    ]
+  },
+  focus_king: {
+    id: 'focus_king',
+    background: 'bg-gradient-to-b from-purple-900 via-slate-800 to-blue-950',
+    character: 'Дарк Какао',
+    text: 'Ты игнорируешь слугу, сосредотачиваясь на короле. Его лицо смягчается. «Умница,» — шепчет он, притягивая тебя ближе. «Мне не нравится делить твоё внимание.» Снег тихо падает вокруг вас. «Пойдём в мои покои. Там теплее.»',
+    choices: [
+      { text: 'Согласиться пойти в покои', next: 'kings_chamber', affection: 3 },
+      { text: 'Предложить вместо этого ужин', next: 'dinner_offer', affection: 1 }
+    ]
+  },
+  return_castle: {
+    id: 'return_castle',
+    background: 'bg-gradient-to-b from-slate-900 via-purple-900 to-black',
+    character: 'Дарк Какао',
+    text: '«В замок?» — он улыбается. «Замёрз? Тогда позволь мне согреть тебя.» Он ведёт тебя обратно длинными коридорами. «Я распорядился приготовить ужин. Только для нас двоих.»',
+    choices: [
+      { text: 'Принять приглашение на ужин', next: 'private_dinner', affection: 2 }
+    ]
+  },
+  dinner_offer: {
+    id: 'dinner_offer',
+    background: 'bg-gradient-to-b from-purple-950 via-slate-900 to-black',
+    character: 'Дарк Какао',
+    text: '«Ужин вдвоём?» — его глаза загораются. «Какая прекрасная идея.» Он отдаёт приказы слугам, не выпуская твою руку. «Я хочу, чтобы никто не мешал нам. Никаких слуг в зале. Только ты и я.»',
+    choices: [
+      { text: 'Согласиться на уединённый ужин', next: 'private_dinner', affection: 2 },
+      { text: 'Предложить пригласить советников', next: 'suggest_advisors', affection: -5 }
+    ]
+  },
+  private_dinner: {
+    id: 'private_dinner',
+    background: 'bg-gradient-to-b from-red-900 via-purple-950 to-black',
+    character: 'Дарк Какао',
+    text: 'Огонь в камине освещает столовую. Король сидит напротив, его взгляд не отрывается от тебя. «Ты прекрасен в свете пламени,» — говорит он тихо. «Знаешь, я мечтал об этом. Только мы, без всего мира.» Он наполняет твой бокал вином. «Выпей за нас.»',
+    choices: [
+      { text: 'Выпить вино', next: 'drink_wine', affection: 2 },
+      { text: 'Отказаться от вина', next: 'refuse_wine', affection: -1 },
+      { text: 'Спросить о его чувствах', next: 'ask_feelings', affection: 1 }
+    ]
+  },
+  suggest_advisors: {
+    id: 'suggest_advisors',
+    background: 'bg-gradient-to-b from-red-950 via-black to-red-950',
+    character: 'Дарк Какао',
+    text: '«Советников?» — его голос падает до опасного шёпота. «Ты хочешь ДРУГИХ людей за нашим столом?» Бокал в его руке трескается. «Тебе недостаточно моей компании?» Воздух наполняется убийственной аурой.',
+    choices: [
+      { text: 'Быстро отказаться от идеи', next: 'backtrack_advisors', affection: -2 },
+      { text: 'Настаивать на работе', next: 'ending_locked_room', affection: -10 }
+    ]
+  },
+  explain_servant: {
+    id: 'explain_servant',
+    background: 'bg-gradient-to-b from-red-900 via-black to-slate-900',
+    character: 'Дарк Какао',
+    text: 'Ты пытаешься объяснить, но он не слушает. «Объяснения... всегда объяснения.» Его хватка болезненна. «Может, тебе нужно время подумать о том, кто действительно важен.» Он щёлкает пальцами. Стража появляется из теней.',
+    choices: [
+      { text: 'Молча следовать за стражей', next: 'ending_locked_room', affection: -5 }
+    ]
+  },
+  apologize_jealousy: {
+    id: 'apologize_jealousy',
+    background: 'bg-gradient-to-b from-purple-950 via-slate-900 to-black',
+    character: 'Дарк Какао',
+    text: '«Прости меня,» — шепчешь ты. Он останавливается. Медленно его хватка ослабевает. «Я просто... не выношу, когда ты смотришь на других.» Он притягивает тебя в объятия. «Обещай, что будешь видеть только меня.»',
+    choices: [
+      { text: 'Обещать', next: 'promise_king', affection: 3 },
+      { text: 'Промолчать', next: 'stay_silent', affection: -1 }
+    ]
+  },
+  kings_chamber: {
+    id: 'kings_chamber',
+    background: 'bg-gradient-to-b from-purple-950 via-red-950 to-black',
+    character: 'Дарк Какао',
+    text: 'Королевские покои роскошны. Огромная кровать с тёмными шёлковыми простынями, камин с ревущим огнём. Король закрывает дверь на ключ. «Наконец-то ты здесь,» — он подходит, снимая корону. «В этих стенах я не король. Я просто мужчина, который безумно любит тебя.»',
+    choices: [
+      { text: 'Принять его признание', next: 'accept_chamber', affection: 4 },
+      { text: 'Попросить открыть дверь', next: 'ask_unlock', affection: -3 }
+    ]
+  },
+  drink_wine: {
+    id: 'drink_wine',
+    background: 'bg-gradient-to-b from-red-950 via-purple-900 to-black',
+    character: 'Дарк Какао',
+    text: 'Вино сладкое, с привкусом специй. Король улыбается. «Хорошо?» Он встаёт и обходит стол, садясь рядом. «Я так долго ждал момента, когда мы будем вот так... близко.» Его рука ложится на твою. «Останься со мной этой ночью. В моих покоях.»',
+    choices: [
+      { text: 'Согласиться остаться', next: 'kings_chamber', affection: 3 },
+      { text: 'Сказать, что нужно вернуться', next: 'refuse_stay', affection: -3 }
+    ]
+  },
+  refuse_wine: {
+    id: 'refuse_wine',
+    background: 'bg-gradient-to-b from-slate-900 via-red-900 to-black',
+    character: 'Дарк Какао',
+    text: 'Ты отказываешься от вина. Король хмурится. «Не доверяешь мне?» — в его голосе слышна обида. «Или ты просто не хочешь пить со мной?» Температура в зале падает. «Всё, что я делаю — для тебя.»',
+    choices: [
+      { text: 'Взять бокал и выпить', next: 'drink_wine', affection: 1 },
+      { text: 'Объяснить, что не пьёшь вино', next: 'explain_wine', affection: 0 }
+    ]
+  },
+  ask_feelings: {
+    id: 'ask_feelings',
+    background: 'bg-gradient-to-b from-purple-900 via-red-950 to-black',
+    character: 'Дарк Какао',
+    text: '«Мои чувства?» — он смотрит на тебя с интенсивностью. «Я люблю тебя. Безумно. Одержимо. Настолько, что готов уничтожить всё, что встанет между нами.» Он встаёт, подходя. «Это любовь или проклятие? Не знаю. Но ты — моя судьба.»',
+    choices: [
+      { text: 'Ответить взаимностью', next: 'ending_confession', affection: 5 },
+      { text: 'Попросить времени подумать', next: 'ask_time', affection: -2 }
+    ]
+  },
+  backtrack_advisors: {
+    id: 'backtrack_advisors',
+    background: 'bg-gradient-to-b from-purple-950 via-slate-900 to-black',
+    character: 'Дарк Какао',
+    text: '«Нет, нет, забудь,» — быстро говоришь ты. «Только мы вдвоём.» Его лицо постепенно расслабляется. «Вот и хорошо.» Он обнимает тебя сзади. «Не заставляй меня ревновать. Я не контролирую себя, когда ревную.»',
+    choices: [
+      { text: 'Согласиться с ним', next: 'private_dinner', affection: 1 }
+    ]
+  },
+  promise_king: {
+    id: 'promise_king',
+    background: 'bg-gradient-to-b from-purple-900 via-red-950 to-black',
+    character: 'Дарк Какао',
+    text: '«Обещаю,» — говоришь ты. Он целует твою руку. «Моё сокровище.» Снег перестаёт падать, как будто сама природа реагирует на его настроение. «Пойдём в мои покои. Хочу быть с тобой наедине.»',
+    choices: [
+      { text: 'Пойти в покои короля', next: 'kings_chamber', affection: 3 }
+    ]
+  },
+  stay_silent: {
+    id: 'stay_silent',
+    background: 'bg-gradient-to-b from-slate-900 via-purple-950 to-black',
+    character: 'Дарк Какао',
+    text: 'Ты молчишь. Король отстраняется. «Молчание... Значит, ты не можешь обещать.» Его глаза наполняются болью и яростью. «Тогда мне придётся убедиться, что ты не будешь видеть никого кроме меня. Насильно.»',
+    choices: [
+      { text: 'Дать обещание сейчас', next: 'promise_king', affection: 1 },
+      { text: 'Продолжить молчать', next: 'ending_locked_room', affection: -8 }
+    ]
+  },
+  accept_chamber: {
+    id: 'accept_chamber',
+    background: 'bg-gradient-to-b from-red-950 via-purple-950 to-black',
+    character: 'Дарк Какао',
+    text: 'Ты принимаешь его признание. Он прижимает тебя к себе с отчаянной нежностью. «Наконец-то,» — шепчет он в твои волосы. «Наконец-то ты мой.» За окном воет метель, но здесь, в его объятиях, тепло. Опасно тепло.',
+    choices: [
+      { text: 'Остаться в его объятиях', next: 'ending_devotion', affection: 5 }
+    ]
+  },
+  ask_unlock: {
+    id: 'ask_unlock',
+    background: 'bg-gradient-to-b from-red-950 via-black to-red-900',
+    character: 'Дарк Какао',
+    text: '«Открыть дверь?» — он застывает. «Ты хочешь уйти? От меня?» Его лицо искажается. «Я привёл тебя сюда, открыл душу, а ты...» Ключ исчезает в его кармане. «Нет. Ты останешься. Пока не поймёшь, что мы созданы друг для друга.»',
+    choices: [
+      { text: 'Смириться с ситуацией', next: 'ending_locked_room', affection: -4 }
+    ]
+  },
+  refuse_stay: {
+    id: 'refuse_stay',
+    background: 'bg-gradient-to-b from-red-900 via-black to-slate-900',
+    character: 'Дарк Какао',
+    text: '«Вернуться?» — его голос становится ледяным. «Куда? К кому?» Он встаёт резко, опрокидывая стул. «Я предлагаю тебе своё сердце, свои покои, себя — а ты отказываешь?» Двери захлопываются.',
+    choices: [
+      { text: 'Передумать и согласиться', next: 'kings_chamber', affection: 0 },
+      { text: 'Настаивать на уходе', next: 'ending_locked_room', affection: -7 }
+    ]
+  },
+  explain_wine: {
+    id: 'explain_wine',
+    background: 'bg-gradient-to-b from-purple-950 via-slate-900 to-black',
+    character: 'Дарк Какао',
+    text: 'Ты объясняешь, что просто не пьёшь. Король смотрит на тебя долгим взглядом, затем кивает. «Понимаю.» Он убирает бокал. «Прости за подозрения. Я просто... боюсь потерять тебя. Настолько боюсь, что вижу угрозу везде.»',
+    choices: [
+      { text: 'Успокоить его', next: 'comfort_king', affection: 2 },
+      { text: 'Сказать, что это нездорово', next: 'call_out_obsession', affection: -3 }
+    ]
+  },
+  ask_time: {
+    id: 'ask_time',
+    background: 'bg-gradient-to-b from-slate-900 via-red-950 to-black',
+    character: 'Дарк Какао',
+    text: '«Время?» — его голос дрожит. «Сколько времени ещё? Я ждал месяцы. Годы.» Он хватает тебя за плечи. «Каждый день наблюдал, как ты улыбаешься другим. Время закончилось, Аффогато.»',
+    choices: [
+      { text: 'Принять его чувства', next: 'ending_confession', affection: 2 },
+      { text: 'Попытаться уйти', next: 'try_leave', affection: -6 }
+    ]
+  },
+  comfort_king: {
+    id: 'comfort_king',
+    background: 'bg-gradient-to-b from-purple-900 via-red-900 to-black',
+    character: 'Дарк Какао',
+    text: 'Ты кладёшь руку на его. «Я здесь,» — говоришь ты тихо. Он сжимает твою руку. «Обещай, что всегда будешь здесь.» Его глаза полны отчаяния и надежды одновременно. «Я не переживу, если ты уйдёшь.»',
+    choices: [
+      { text: 'Обещать остаться', next: 'ending_acceptance', affection: 4 },
+      { text: 'Обещать быть рядом, но не навсегда', next: 'conditional_promise', affection: -2 }
+    ]
+  },
+  call_out_obsession: {
+    id: 'call_out_obsession',
+    background: 'bg-gradient-to-b from-red-950 via-black to-red-900',
+    character: 'Дарк Какао',
+    text: '«Нездорово?» — он смеётся без юмора. «Ты думаешь, я не знаю? Моя любовь — это болезнь. Яд. Но я не хочу лечиться.» Он встаёт. «И ты станешь частью этой болезни. По своей воле... или нет.»',
+    choices: [
+      { text: 'Попытаться убежать', next: 'try_leave', affection: -8 },
+      { text: 'Принять его таким, какой он есть', next: 'ending_resignation', affection: 0 }
+    ]
+  },
+  try_leave: {
+    id: 'try_leave',
+    background: 'bg-gradient-to-b from-red-900 via-black to-red-950',
+    character: 'Дарк Какао',
+    text: 'Ты направляешься к двери. «Стой.» Его голос — приказ. Дверь замерзает, покрываясь льдом. «Никто не уходит от меня. Особенно ты.» Стража блокирует выход.',
+    choices: [
+      { text: 'Сдаться', next: 'ending_locked_room', affection: -6 }
+    ]
+  },
+  conditional_promise: {
+    id: 'conditional_promise',
+    background: 'bg-gradient-to-b from-slate-900 via-purple-950 to-black',
+    character: 'Дарк Какао',
+    text: '«Не навсегда?» — он отпускает твою руку. «Значит, ты уже планируешь уйти.» Его голос холоден. «Мне не нужны условные обещания. Мне нужна вечность. С тобой.»',
+    choices: [
+      { text: 'Дать безусловное обещание', next: 'ending_acceptance', affection: 2 },
+      { text: 'Настаивать на своих условиях', next: 'ending_locked_room', affection: -5 }
+    ]
+  },
+  ending_locked_room: {
+    id: 'ending_locked_room',
+    background: 'bg-gradient-to-b from-black via-slate-900 to-purple-950',
+    character: 'Конец: Запертая комната',
+    text: 'Дверь захлопывается за тобой. Роскошная комната становится твоей клеткой. «Ты останешься здесь, пока не поймёшь,» — говорит Дарк Какао через дверь. «Никаких слуг. Никаких советников. Только я буду навещать тебя.» Дни превращаются в недели. Ты видишь только его. Постепенно весь мир сужается до одного человека. Возможно, это и было его планом с самого начала.',
+    isEnding: true
   },
   ending_obsession: {
     id: 'ending_obsession',
